@@ -35,7 +35,7 @@ import (
 var (
 	ErrShuttingDown = errors.New("shutting down")
 )
-
+// p2p 握手的数据限制
 const (
 	baseProtocolVersion    = 5
 	baseProtocolLength     = uint64(16)
@@ -236,6 +236,7 @@ loop:
 	return remoteRequested, err
 }
 
+// 15s 进行一次心跳坚持
 func (p *Peer) pingLoop() {
 	ping := time.NewTimer(pingInterval)
 	defer p.wg.Done()
@@ -247,6 +248,7 @@ func (p *Peer) pingLoop() {
 				p.protoErr <- err
 				return
 			}
+			// 重新设置时间间隔，主要是为了减少过程的时间。
 			ping.Reset(pingInterval)
 		case <-p.closed:
 			return
@@ -336,7 +338,7 @@ outer:
 	}
 	return result
 }
-
+// 开启运行节点监控协议。
 func (p *Peer) startProtocols(writeStart <-chan struct{}, writeErr chan<- error) {
 	p.wg.Add(len(p.running))
 	for _, proto := range p.running {

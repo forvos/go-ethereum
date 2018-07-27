@@ -28,6 +28,8 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
+// 节点与节点之间的通信协议规范标准。
+
 // Constants to match up protocol versions and messages
 const (
 	eth62 = 62
@@ -43,6 +45,7 @@ var ProtocolVersions = []uint{eth63, eth62}
 // ProtocolLengths are the number of implemented message corresponding to different protocol versions.
 var ProtocolLengths = []uint64{17, 8}
 
+// 最大10M 单次发送。
 const ProtocolMaxMsgSize = 10 * 1024 * 1024 // Maximum cap on the size of a protocol message
 
 // eth protocol message codes

@@ -63,6 +63,7 @@ func errResp(code errCode, format string, v ...interface{}) error {
 	return fmt.Errorf("%v - %v", code, fmt.Sprintf(format, v...))
 }
 
+// 以太坊协议管理者，管理多个子协议。同步、交易、事件、节点、交易池、链等等
 type ProtocolManager struct {
 	networkID uint64
 
@@ -263,6 +264,8 @@ func (pm *ProtocolManager) handle(p *peer) error {
 		number  = head.Number.Uint64()
 		td      = pm.blockchain.GetTd(hash, number)
 	)
+
+	// p2p节点握手，需要根据创世块hash一样，指定高度的总难度一样，握手成功
 	if err := p.Handshake(pm.networkID, td, hash, genesis.Hash()); err != nil {
 		p.Log().Debug("Ethereum handshake failed", "err", err)
 		return err

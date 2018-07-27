@@ -58,6 +58,7 @@ type LesServer interface {
 	SetBloomBitsIndexer(bbIndexer *core.ChainIndexer)
 }
 
+// 各个子服务以注册的方式，注册进去。
 // Ethereum implements the Ethereum full node service.
 type Ethereum struct {
 	config      *Config

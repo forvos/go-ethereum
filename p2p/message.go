@@ -31,7 +31,7 @@ import (
 )
 
 // Msg defines the structure of a p2p message.
-//
+// p2p 网络通讯协议数据格式定义
 // Note that a Msg can only be sent once since the Payload reader is
 // consumed during sending. It is not possible to create a Msg and
 // send it any number of times. If you want to reuse an encoded
@@ -90,6 +90,7 @@ type MsgReadWriter interface {
 // Send writes an RLP-encoded message with the given code.
 // data should encode as an RLP list.
 func Send(w MsgWriter, msgcode uint64, data interface{}) error {
+	// 编码数据，这个数据是否包含块呢？？？
 	size, r, err := rlp.EncodeToReader(data)
 	if err != nil {
 		return err
@@ -216,6 +217,7 @@ func (p *MsgPipeRW) Close() error {
 	return nil
 }
 
+// 读取数据， udp协议读取的数据，难道不怕丢失？
 // ExpectMsg reads a message from r and verifies that its
 // code and encoded RLP content match the provided values.
 // If content is nil, the payload is discarded and not verified.
