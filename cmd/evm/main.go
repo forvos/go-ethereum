@@ -142,6 +142,7 @@ func init() {
 	}
 }
 
+// 服务注册的方式运行代码.
 func main() {
 	if err := app.Run(os.Args); err != nil {
 		fmt.Fprintln(os.Stderr, err)

@@ -43,6 +43,7 @@ import (
 )
 
 const (
+	// blocks headers 等等最大限制!
 	softResponseLimit = 2 * 1024 * 1024 // Target maximum size of returned blocks, headers or node data.
 	estHeaderRlpSize  = 500             // Approximate size of an RLP encoded block header
 

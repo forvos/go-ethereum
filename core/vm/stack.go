@@ -18,6 +18,7 @@ package vm
 
 import (
 	"fmt"
+	"github.com/ethereum/go-ethereum/params"
 	"math/big"
 )
 
@@ -28,8 +29,9 @@ type Stack struct {
 	data []*big.Int
 }
 
+// 大整形堆栈, 深度时1024.
 func newstack() *Stack {
-	return &Stack{data: make([]*big.Int, 0, 1024)}
+	return &Stack{data: make([]*big.Int, 0, params.StackLimit)}
 }
 
 // Data returns the underlying big.Int array.
@@ -43,6 +45,7 @@ func (st *Stack) push(d *big.Int) {
 	//st.data = append(st.data, stackItem)
 	st.data = append(st.data, d)
 }
+
 func (st *Stack) pushN(ds ...*big.Int) {
 	st.data = append(st.data, ds...)
 }
