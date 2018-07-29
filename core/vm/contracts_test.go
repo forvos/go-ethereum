@@ -481,3 +481,8 @@ func BenchmarkPrecompiledBn256Pairing(bench *testing.B) {
 		benchmarkPrecompiled("08", test, bench)
 	}
 }
+
+func TestBig1(t *testing.T) {
+	big199680 = big.NewInt(199612380)
+	t.Logf("%v", big199680)
+}

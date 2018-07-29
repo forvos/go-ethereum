@@ -21,6 +21,8 @@ import (
 	"sync"
 )
 
+// *Int池, 以及stack池,更具golang语言的特性, 使用后再放入池内, 不会被GC回收.
+// 因此golang的池都会存在get与put两个方法.
 var checkVal = big.NewInt(-42)
 
 const poolLimit = 256
