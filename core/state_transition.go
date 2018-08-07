@@ -75,15 +75,17 @@ type Message interface {
 	Data() []byte
 }
 
+// 交易的消耗gas的计算, 以及操作码是0与非0的gas计算.
 // IntrinsicGas computes the 'intrinsic gas' for a message with the given data.
 func IntrinsicGas(data []byte, contractCreation, homestead bool) (uint64, error) {
 	// Set the starting gas for the raw transaction
 	var gas uint64
 	if contractCreation && homestead {
-		gas = params.TxGasContractCreation
+		gas = params.TxGasContractCreation //创建合约的最小gas
 	} else {
 		gas = params.TxGas
 	}
+	// 上面是是最小的gas消耗.
 	// Bump the required gas by the amount of transactional data
 	if len(data) > 0 {
 		// Zero and non-zero bytes are priced differently
@@ -103,7 +105,7 @@ func IntrinsicGas(data []byte, contractCreation, homestead bool) (uint64, error)
 		if (math.MaxUint64-gas)/params.TxDataZeroGas < z {
 			return 0, vm.ErrOutOfGas
 		}
-		gas += z * params.TxDataZeroGas
+		gas += z * params.TxDataZeroGas //数据是0的gas消耗
 	}
 	return gas, nil
 }
@@ -205,9 +207,9 @@ func (st *StateTransition) TransitionDb() (ret []byte, usedGas uint64, failed bo
 		// error.
 		vmerr error
 	)
-	if contractCreation {
+	if contractCreation {// 创建合约
 		ret, _, st.gas, vmerr = evm.Create(sender, st.data, st.gas, st.value)
-	} else {
+	} else {// 调用call
 		// Increment the nonce for the next transaction
 		st.state.SetNonce(msg.From(), st.state.GetNonce(sender.Address())+1)
 		ret, st.gas, vmerr = evm.Call(sender, st.to(), st.data, st.gas, st.value)

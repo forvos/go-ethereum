@@ -29,7 +29,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethdb"
 	"github.com/ethereum/go-ethereum/params"
 )
-
+// 主要用于测试.
 // BlockGen creates blocks for testing.
 // See GenerateChain for a detailed explanation.
 type BlockGen struct {

@@ -21,7 +21,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/core/types"
 )
-
+// 主要是并发的恢复数字签名. sender用户
 // senderCacher is a concurrent tranaction sender recoverer anc cacher.
 var senderCacher = newTxSenderCacher(runtime.NumCPU())
 
@@ -58,7 +58,7 @@ func newTxSenderCacher(threads int) *txSenderCacher {
 }
 
 // cache is an infinite loop, caching transaction senders from various forms of
-// data structures.
+// data structures. 恢复地址.
 func (cacher *txSenderCacher) cache() {
 	for task := range cacher.tasks {
 		for i := 0; i < len(task.txs); i += task.inc {

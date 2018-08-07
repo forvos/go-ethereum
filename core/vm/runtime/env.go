@@ -22,6 +22,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/vm"
 )
 
+// 创建一个运行环境, 目前主要是用于fuzz-tool工具的测试.
 func NewEnv(cfg *Config) *vm.EVM {
 	context := vm.Context{
 		CanTransfer: core.CanTransfer,

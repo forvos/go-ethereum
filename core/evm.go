@@ -24,7 +24,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/core/vm"
 )
-
+// 链的上下文信息.
 // ChainContext supports retrieving headers and consensus parameters from the
 // current blockchain to be used during transaction processing.
 type ChainContext interface {
@@ -38,7 +38,7 @@ type ChainContext interface {
 // NewEVMContext creates a new context for use in the EVM.
 func NewEVMContext(msg Message, header *types.Header, chain ChainContext, author *common.Address) vm.Context {
 	// If we don't have an explicit author (i.e. not mining), extract from the header
-	var beneficiary common.Address
+	var beneficiary common.Address //获取块的产生者地址.
 	if author == nil {
 		beneficiary, _ = chain.Engine().Author(header) // Ignore error, we're past header validation
 	} else {
@@ -58,6 +58,7 @@ func NewEVMContext(msg Message, header *types.Header, chain ChainContext, author
 	}
 }
 
+// 返回一个函数, 此函数需要高度参数,返回对应的头部哈希
 // GetHashFn returns a GetHashFunc which retrieves header hashes by number
 func GetHashFn(ref *types.Header, chain ChainContext) func(n uint64) common.Hash {
 	var cache map[uint64]common.Hash
@@ -84,12 +85,14 @@ func GetHashFn(ref *types.Header, chain ChainContext) func(n uint64) common.Hash
 	}
 }
 
+// 校验账户的金额是否足够!
 // CanTransfer checks whether there are enough funds in the address' account to make a transfer.
 // This does not take the necessary gas in to account to make the transfer valid.
 func CanTransfer(db vm.StateDB, addr common.Address, amount *big.Int) bool {
 	return db.GetBalance(addr).Cmp(amount) >= 0
 }
 
+// 转账函数,非常简单, 减去sender amount数量的币,增加 recipient amount数量的币.
 // Transfer subtracts amount from sender and adds amount to recipient using the given Db
 func Transfer(db vm.StateDB, sender, recipient common.Address, amount *big.Int) {
 	db.SubBalance(sender, amount)

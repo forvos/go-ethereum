@@ -28,7 +28,7 @@ import (
 	"github.com/ethereum/go-ethereum/params"
 	"golang.org/x/crypto/ripemd160"
 )
-
+// 预编译合约接口,实现这个接口的的结构,存在多个,具体每一个的用途,会分析一下的.
 // PrecompiledContract is the basic interface for native Go contracts. The implementation
 // requires a deterministic gas count based on the input size of the Run method of the
 // contract.
